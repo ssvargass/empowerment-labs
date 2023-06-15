@@ -48,6 +48,24 @@ export const mockData: BatchWriteItemInput = {
           },
         },
       },
+      {
+        PutRequest: {
+          Item: {
+            PK: { S: 'Cambalache' },
+            SK: { S: 'restaurant_argentino' },
+            tag: { S: 'argentino' },
+          },
+        },
+      },
+      {
+        PutRequest: {
+          Item: {
+            PK: { S: 'Cambalache' },
+            SK: { S: 'restaurant_carne' },
+            tag: { S: 'carne' },
+          },
+        },
+      },
     ],
   },
 };
