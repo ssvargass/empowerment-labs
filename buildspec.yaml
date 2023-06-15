@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_BASE
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - env
+      - MY_HASH=$(echo $CODEBUILD_GIT_COMMIT | head -c 8)
+      - MY_BRANCH=$(echo $CODEBUILD_GIT_BRANCH | sed 's/[^a-zA-Z0-9-]/_/g')
+      - docker build -t $IMAGE_REPO_NAME:latest .
+      - docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_BASE/$IMAGE_REPO_NAME:latest
+      - docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_BASE/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $IMAGE_REPO_BASE/$IMAGE_REPO_NAME:latest
+      - docker push $IMAGE_REPO_BASE/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
