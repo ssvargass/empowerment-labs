@@ -9,15 +9,19 @@ Technical test for Empowerment Labs BE position
 </p>
 
 ## Description
-
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
-- Docker
-- Docker compose
-
 ```bash
+// Install libraries
 $ yarn install
+// Install Dynamo and runn it in Docker
+$ docker compose 
+```
+In a different console run
+```bash
+// Migrate intial data
+$ yarn init:data
 ```
 
 ## Running the app with Docker (Suggested)
@@ -29,7 +33,6 @@ $ docker-compose up
 [http://127.0.0.1:8001](http://127.0.0.1:8001)
 
 ## Test
-
 ```bash
 # unit tests
 $ yarn run test
