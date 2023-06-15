@@ -1,5 +1,6 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { QueryCommandOutput } from '@aws-sdk/lib-dynamodb';
+import { get } from 'lodash';
 
 import { SuggestionsService } from './suggestions.service';
 import { GetSuggestionDto } from './dto/get-suggestion.dto';
@@ -12,9 +13,10 @@ export class SuggestionsController {
   findSuggestion(
     @Query() suggestionDto: GetSuggestionDto,
   ): Promise<QueryCommandOutput> {
-    if (!suggestionDto.interest || suggestionDto.interest == '') {
+    const interest = get(suggestionDto, 'interest', '');
+    if (interest === '') {
       throw new BadRequestException('The param interest is required');
     }
-    return this.suggestionsService.getSuggestion(suggestionDto.interest);
+    return this.suggestionsService.getSuggestion(interest);
   }
 }
