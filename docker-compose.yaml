@@ -10,10 +10,14 @@ services:
     container_name: empowerment-app
     entrypoint: [ "yarn", "start:dev" ]
     restart: always
+    env_file:
+      - .env.local.docker
     ports:
       - "${PORT}:${PORT}"
     environment:
       PORT: ${PORT}
+    volumes:
+      - .:/app
 
   dynamodb_admin:
     image: aaronshaf/dynamodb-admin
